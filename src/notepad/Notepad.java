@@ -306,6 +306,18 @@ String foldername,filename;
         area.setFont(area.getFont().deriveFont(Font.ITALIC,14f));
     }//italics
    
+    else if(eve.getSource() == f5){
+        //word count!!!!!
+       
+        JFrame frame = new JFrame("Word Count");
+        String select=area.getSelectedText();
+        int len=select.length();
+    // show a joptionpane dialog using showMessageDialog
+        JOptionPane.showMessageDialog(frame,
+        "Count of Characters: '" + len + "'.");
+   
+    }
+   
     else if(eve.getSource()==m6){
         //find
     }
@@ -392,8 +404,3 @@ String foldername,filename;
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
-    
-
-    
-    
-
