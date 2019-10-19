@@ -42,8 +42,10 @@ public class Notepad implements ActionListener//,Printable
     JMenuItem v1;
     JMenuItem h1,h2;
     JMenuItem f1,f2,f3,f4,f5;
+    JMenuItem c1,c2,c3,c4,c5,c6;
    
     Clipboard cb=Toolkit.getDefaultToolkit().getSystemClipboard();
+   
     void setAction(){
         x1.addActionListener(this);
         x2.addActionListener(this);
@@ -71,10 +73,8 @@ public class Notepad implements ActionListener//,Printable
         f5.addActionListener(this);
         v1.addActionListener(this);
     }
-    /*private void update(){
-        if(area.getSelectedText()!= null)
-            System.out.println("Selected ")
-    }*/
+   
+   
 public Notepad(){
     f=new JFrame("Untitled-Notepad");
     JPanel p=new JPanel();
@@ -82,6 +82,7 @@ public Notepad(){
     file=new JMenu("File");
     edit=new JMenu("Edit");
     format=new JMenu("Format");
+    code=new JMenu("Code");
     view =new JMenu("View");
     help=new JMenu("Help");
     f.add(new JScrollPane(area));
@@ -138,7 +139,17 @@ public Notepad(){
     edit.add(m3);
     edit.add(m4);edit.add(m5);edit.addSeparator();
     edit.add(m6);edit.add(m7);edit.add(m8);edit.add(m9);edit.add(m10);
+    c1=new JMenuItem("Java");
+    c2=new JMenuItem("C");
+    c3=new JMenuItem("C++");
+    c4=new JMenuItem("Python");c5=new JMenuItem("JavaScript");
    
+   
+    code.add(c1);
+    code.add(c2);
+    code.add(c3);
+    code.add(c4);
+    code.add(c5);
    
    
     v1=new JMenuItem("Status Bar");
@@ -168,6 +179,7 @@ public Notepad(){
     mb.add(view);
     mb.add(format);
     mb.add(help);
+    mb.add(code);
     setAction();
     f.setJMenuBar(mb);
     area.setBounds(0,0,750,750);
@@ -216,7 +228,7 @@ String foldername,filename;
             String[] str=filename.split("\\.",2);
            
             //System.out.println(filename);
-            f.setTitle(str[0]);  
+            f.setTitle(str[0]);
             try{
             FileWriter fw=new FileWriter(us);
             fw.write(content);
