@@ -7,6 +7,7 @@ package notepad;
 import java.awt.Color;
 import java.io.File;
 import java.applet.Applet;
+import java.awt.Dimension;
 import java.awt.Graphics;
 //import edu.rit.swing.FileTypeFilter;
 import java.io.IOException;
@@ -22,11 +23,13 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.awt.font.TextAttribute;
 import java.text.AttributedString;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import javax.swing.JRadioButton;
 
 //import textfiles.WriteFile;
 //import java.awt.print.*;
@@ -34,7 +37,7 @@ import javax.swing.text.Highlighter;
  *
  * @author SejalGupta
  */
-public class Notepad implements ActionListener//,Printable
+public class Notepad implements ActionListener //,Printable
 {
     JMenuBar mb;JMenu file,edit,view,help,format,code;JFrame f;JTextArea area;  
     JMenuItem x1,x2,x3,x4,x5,x6,x7;
@@ -44,6 +47,7 @@ public class Notepad implements ActionListener//,Printable
     JMenuItem f1,f2,f3,f4,f5;
     JMenuItem c1,c2,c3,c4,c5,c6;
    
+    JFrame secure;
     Clipboard cb=Toolkit.getDefaultToolkit().getSystemClipboard();
    
     void setAction(){
@@ -76,6 +80,7 @@ public class Notepad implements ActionListener//,Printable
    
    
 public Notepad(){
+    
     f=new JFrame("Untitled-Notepad");
     JPanel p=new JPanel();
     mb=new JMenuBar();
@@ -193,67 +198,160 @@ public Notepad(){
     f.setVisible(true);
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.getContentPane().add(scroll);
-   
+    secure = new JFrame();
 }
 String foldername,filename;
     @Override
     public void actionPerformed(ActionEvent eve){
-    if(eve.getSource()==x7)
-        System.exit(0);
-    else if(eve.getSource()==x1)
-        new Notepad();
-    else if(eve.getSource()==x2)
-            new Open(area);
-    else if(eve.getSource()==x4)
-    { //SAVE AS
-        JFileChooser chooser=new JFileChooser("E:\\");
-        chooser.setDialogTitle("Save As");
-        int rval= chooser.showSaveDialog(null);
-            //if(rval==javax.swing.JFileChooser.APPROVE_OPTION){
-        filename=chooser.getSelectedFile().getName();
-        f.setTitle(filename);
-    }
-    else if(eve.getSource()==x3){
-        //SAVE
-    JFileChooser jf=new JFileChooser("E:\\");
-        //jf.setFileFilter(new FileTypeFilter(".txt","Text File"));
+    
+    if(eve.getSource() == x1)
+        new Notepad(); //new window
+    else if(eve.getSource() == x2)
+        new Open(area); //open dialog box
+    else if(eve.getSource() == x3){    //save
+        JFileChooser jf=new JFileChooser("E:\\");
+//        jf.setFileFilter(new FileTypeFilter(".txt","Text File"));
         int rval= jf.showSaveDialog(null);
+        
         if(rval==JFileChooser.APPROVE_OPTION)
         {
             String content=area.getText();
             File fi=jf.getSelectedFile();
             String us=fi.getPath();//+".txt";
-            //System.out.println(fi.getPath());
+            System.out.println(us);
             filename=fi.getName();
             String[] str=filename.split("\\.",2);
-           
             //System.out.println(filename);
             f.setTitle(str[0]);
+            
+            
             try{
             FileWriter fw=new FileWriter(us);
             fw.write(content);
             fw.flush();
             fw.close();
-            /*FileReader r=new FileReader(filename);
-           
-            BufferedReader br=new BufferedReader(r);
-            String line;
-            while((line=br.readLine())!=null){
-                wr.write(line);*/
             }
            
+            catch(IOException e){
+                JOptionPane.showMessageDialog(null,e.getMessage());
+                e.printStackTrace();
+            }
+        
+        
+        //Applying security after save
+        
+        secure.setLayout(null);  
+//        secure.setTitle("yehi hu main");
+        secure.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  
+//        secure.setVisible(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        secure.setLocation(dim.width/2, dim.height/2);
+        int a = JOptionPane.showConfirmDialog(secure,"Would you like to secure your file?");
+        
+        if(a==0){  //approved of securing file 
+            JFrame security = new JFrame();
+            JRadioButton r1 = new JRadioButton("Secure");
+            JRadioButton r2 = new JRadioButton("Highly Secure");
+            JRadioButton r3 = new JRadioButton("Confidential");
+            JLabel l = new JLabel("Select the degree of security:");
+            JButton b=new JButton("Secure file");
            
-        catch(IOException e){
-            JOptionPane.showMessageDialog(null,e.getMessage());
-            e.printStackTrace();
+            
+            r1.setBounds(70,50,150,30);    
+            r2.setBounds(70,100,150,30);
+            r3.setBounds(70,150,150,30);
+            l.setBounds(20,5,200,40);
+            b.setBounds(70,200,150,30);  
+            b.addActionListener(this);
+            
+            ButtonGroup bg=new ButtonGroup();    
+            bg.add(r1);bg.add(r2);bg.add(r3);   
+            security.add(r1);security.add(r2);security.add(r3); security.add(b);security.add(l);
+            
+            
+            security.setTitle("Secure Your File");
+            security.setSize(300,300);    
+            security.setLayout(null); 
+            
+            security.setLocation(dim.width/2,dim.height/2);
+            security.setVisible(true);            
+            
+            
+            
+            //degree level selected -> 
+            
+            b.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e) 
+                { 
+                    String algo=null;
+                    
+                    if(r1.isSelected()){
+//                        System.out.print("1selected");
+                    }
+                    else if(r2.isSelected()){
+                    }
+                    else if(r3.isSelected()){}
+                    else{
+                        
+                    }
+                }   
+                
+                
+                
+            });
+            
+            
+            
+            
+            
+//            JOptionPane.showMessageDialog(security,,"Alert",JOptionPane.WARNING_MESSAGE);
         }
+        else{
+            //don't secure
+            secure.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+        }
+        }
+        else{
+            //Save cancelled
         }
     }
+    else if(eve.getSource() == x4)
+    { //SAVE AS
+        JFileChooser chooser=new JFileChooser("E:\\");
+        chooser.setDialogTitle("Save As");
+        int rval= chooser.showSaveDialog(null);
+        if(rval==JFileChooser.APPROVE_OPTION){
+            filename=chooser.getSelectedFile().getName();
+            f.setTitle(filename);
+            
+            
+            String content=area.getText();
+            File fi=chooser.getSelectedFile();
+            String us=fi.getPath();
+            
+            try{
+            FileWriter fw=new FileWriter(us);
+            fw.write(content);
+            fw.flush();
+            fw.close();
+            }
+           
+            catch(IOException e){
+                JOptionPane.showMessageDialog(null,e.getMessage());
+                e.printStackTrace();
+            }
+            
+        }
+        else{
+            //Save cancelled
+        }
+    }
+    
        
     else if(eve.getSource()==x5);
     else if(eve.getSource()==h1){
        
-                }
+    }
     else if(eve.getSource()==h2){
         new About();
     }
@@ -264,6 +362,8 @@ String foldername,filename;
         catch(Exception e){
         }
     }
+    else if(eve.getSource()==x7)
+        System.exit(0);
     else if(eve.getSource()==m1);
     else if(eve.getSource()==m2)
     {  //COPY
@@ -409,7 +509,7 @@ String foldername,filename;
 
    
     public static void main(String[] args) {
-              new Notepad();
+        new Notepad();
     }
 
     private String getCurrentDirectory() {
