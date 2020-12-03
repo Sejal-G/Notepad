@@ -43,9 +43,9 @@ public class Notepad implements ActionListener//,Printable
     JMenuItem h1,h2;
     JMenuItem f1,f2,f3,f4,f5;
     JMenuItem c1,c2,c3,c4,c5,c6;
-    
+   
     Clipboard cb=Toolkit.getDefaultToolkit().getSystemClipboard();
-    
+   
     void setAction(){
         x1.addActionListener(this);
         x2.addActionListener(this);
@@ -73,8 +73,8 @@ public class Notepad implements ActionListener//,Printable
         f5.addActionListener(this);
         v1.addActionListener(this);
     }
-    
-    
+   
+   
 public Notepad(){
     f=new JFrame("Untitled-Notepad");
     JPanel p=new JPanel();
@@ -97,13 +97,13 @@ public Notepad(){
     f4=new JMenuItem("Italics");
     f5=new JMenuItem("Word Count");
     format.add(f1);
-    
+   
     format.add(f2);
     format.add(f3);
     format.add(f4);format.add(f5);
     m1=new JMenuItem("Undo ");
     m1.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z,
-            java.awt.Event.CTRL_MASK)); 
+            java.awt.Event.CTRL_MASK));
     m2=new JMenuItem("Copy ");
     m2.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C,
             java.awt.Event.CTRL_MASK));
@@ -132,8 +132,8 @@ public Notepad(){
             java.awt.Event.CTRL_MASK));
     f4.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I,
             java.awt.Event.CTRL_MASK));
-    
-    
+   
+   
     m10=new JMenuItem("Time ");
     edit.add(m1);edit.add(m2);
     edit.add(m3);
@@ -143,15 +143,15 @@ public Notepad(){
     c2=new JMenuItem("C");
     c3=new JMenuItem("C++");
     c4=new JMenuItem("Python");c5=new JMenuItem("JavaScript");
-    
-    
+   
+   
     code.add(c1);
     code.add(c2);
     code.add(c3);
     code.add(c4);
     code.add(c5);
-    
-    
+   
+   
     v1=new JMenuItem("Status Bar");
     x1=new JMenuItem("New ");
     x1.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
@@ -173,7 +173,7 @@ public Notepad(){
     file.add(x2);
     file.add(x3);
     file.add(x4);file.addSeparator();
-    file.add(x5);file.add(x6);file.add(x7); 
+    file.add(x5);file.add(x6);file.add(x7);
     mb.add(file);
     mb.add(edit);
     mb.add(view);
@@ -193,7 +193,7 @@ public Notepad(){
     f.setVisible(true);
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.getContentPane().add(scroll);
-    
+   
 }
 String foldername,filename;
     @Override
@@ -206,29 +206,11 @@ String foldername,filename;
             new Open(area);
     else if(eve.getSource()==x4)
     { //SAVE AS
-//        JFileChooser chooser=new JFileChooser("E:\\");
-//        chooser.setDialogTitle("Save As");
-//        int rval= chooser.showSaveDialog(null);
-//            //if(rval==javax.swing.JFileChooser.APPROVE_OPTION){
-//        
-//            
-//        filename=chooser.getSelectedFile().getName();
-//        System.out.println(filename);
-//        f.setTitle(filename);
-        
-        // parent component of the dialog
-        JFrame parentFrame = new JFrame();
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save As");   
-
-        int userSelection = fileChooser.showSaveDialog(parentFrame);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            System.out.println("lo");
-            File fileToSave = fileChooser.getSelectedFile();
-//            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-        }
+        JFileChooser chooser=new JFileChooser("E:\\");
+        chooser.setDialogTitle("Save As");
+        int rval= chooser.showSaveDialog(null);
+            //if(rval==javax.swing.JFileChooser.APPROVE_OPTION){
+        filename=chooser.getSelectedFile().getName();
         f.setTitle(filename);
     }
     else if(eve.getSource()==x3){
@@ -244,7 +226,7 @@ String foldername,filename;
             //System.out.println(fi.getPath());
             filename=fi.getName();
             String[] str=filename.split("\\.",2);
-            
+           
             //System.out.println(filename);
             f.setTitle(str[0]);
             try{
@@ -253,24 +235,24 @@ String foldername,filename;
             fw.flush();
             fw.close();
             /*FileReader r=new FileReader(filename);
-            
+           
             BufferedReader br=new BufferedReader(r);
             String line;
             while((line=br.readLine())!=null){
                 wr.write(line);*/
             }
            
-            
+           
         catch(IOException e){
             JOptionPane.showMessageDialog(null,e.getMessage());
             e.printStackTrace();
         }
         }
     }
-        
+       
     else if(eve.getSource()==x5);
     else if(eve.getSource()==h1){
-        
+       
                 }
     else if(eve.getSource()==h2){
         new About();
@@ -286,12 +268,12 @@ String foldername,filename;
     else if(eve.getSource()==m2)
     {  //COPY
        StringSelection jtf= new StringSelection(area.getSelectedText());
-        
+       
         cb.setContents(jtf,jtf);
     }
     else if(eve.getSource()==m3){
         //PASTE
-        
+       
         Transferable clipData=cb.getContents(this);
         try{
             String clipString=(String)clipData.getTransferData(DataFlavor.stringFlavor);
@@ -304,20 +286,20 @@ String foldername,filename;
     }
     else if(eve.getSource()==m4){
         //CUT
-       try{ 
+       try{
        StringSelection jtf=new StringSelection(area.getSelectedText());
-       cb.setContents(jtf,jtf); 
+       cb.setContents(jtf,jtf);
        area.replaceRange("",area.getSelectionStart(),area.getSelectionEnd());
         }
        catch(Exception e){
            System.err.println("Not Working");
        }
     }
-    
+   
     else if(eve.getSource()==m5){
         //StringSelection jtf=new StringSelection(area.getSelectedText());
         area.replaceRange("", area.getSelectionStart(), area.getSelectionEnd());
-        
+       
     }
     else if(eve.getSource()==f2){
         
@@ -425,7 +407,7 @@ String foldername,filename;
 }
    
 
-    
+   
     public static void main(String[] args) {
               new Notepad();
     }
@@ -434,8 +416,3 @@ String foldername,filename;
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
-    
-
-    
-    
-
